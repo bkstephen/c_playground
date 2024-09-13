@@ -1,11 +1,12 @@
 #include <gtk-4.0/gtk/gtk.h>
 #include <stdio.h>
+#include "shell_utils.h"
 
-static void print_entry(GtkEntry *entry_field) {
-    GtkEntryBuffer *buffer = gtk_entry_get_buffer(entry_field);
-    const char *text = gtk_entry_buffer_get_text(buffer);    
-    g_print("%s\n", text);
-}
+// static char *get_entry_field_ip(GtkEntry *entry_field) {
+//     GtkEntryBuffer *buffer = gtk_entry_get_buffer(entry_field);
+//     const char *text = gtk_entry_buffer_get_text(buffer);    
+//     return text;
+// }
 
 static void on_activate(GtkApplication *app) {
     // Create a new window
@@ -18,20 +19,22 @@ static void on_activate(GtkApplication *app) {
     gtk_grid_set_row_spacing(GTK_GRID(grid), 10);
 
     // Input field
-    GtkWidget *entry_field = gtk_entry_new();
+    GtkWidget *ip_field = gtk_entry_new();
+    CallBackData *data = init_callback_data(ip_field);
 
     // Buttons
-    GtkWidget *button = gtk_button_new_with_label("a button");
+    GtkWidget *nmap_button = gtk_button_new_with_label("nmap");
     GtkWidget *get_input_button = gtk_button_new_with_label("Get input");
 
     // Attack items on main UI
-    gtk_grid_attach(GTK_GRID(grid), button, 0, 1, 5, 1);
+    gtk_grid_attach(GTK_GRID(grid), nmap_button, 0, 1, 5, 1);
     gtk_grid_attach(GTK_GRID(grid), get_input_button, 0, 2, 5, 1);
-    gtk_grid_attach(GTK_GRID(grid), entry_field, 0, 4, 5, 1);
+    gtk_grid_attach(GTK_GRID(grid), ip_field, 0, 4, 5, 1);
 
     // When the button is clicked, close the window passed as an argument
-    g_signal_connect_swapped(button, "clicked", G_CALLBACK(gtk_window_close), window);
-    g_signal_connect_swapped(get_input_button, "clicked", G_CALLBACK(print_entry), entry_field);
+    //g_signal_connect_swapped(nmap_button, "clicked", G_CALLBACK(gtk_window_close), window);
+    g_signal_connect_swapped(nmap_button, "clicked", G_CALLBACK(nmap), data);
+    //g_signal_connect_swapped(get_input_button, "clicked", G_CALLBACK(print_entry), ip_field);
     
     gtk_window_set_child(GTK_WINDOW(window), grid);
     gtk_window_present(GTK_WINDOW(window));
