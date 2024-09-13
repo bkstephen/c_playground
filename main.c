@@ -22,24 +22,24 @@ static void on_activate(GtkApplication *app) {
 
     // Buttons
     GtkWidget *button = gtk_button_new_with_label("a button");
-    GtkWidget *button2 = gtk_button_new_with_label("Get input");
+    GtkWidget *get_input_button = gtk_button_new_with_label("Get input");
 
     // Attack items on main UI
     gtk_grid_attach(GTK_GRID(grid), button, 0, 1, 5, 1);
-    gtk_grid_attach(GTK_GRID(grid), button2, 0, 2, 5, 1);
+    gtk_grid_attach(GTK_GRID(grid), get_input_button, 0, 2, 5, 1);
     gtk_grid_attach(GTK_GRID(grid), entry_field, 0, 4, 5, 1);
 
     // When the button is clicked, close the window passed as an argument
     g_signal_connect_swapped(button, "clicked", G_CALLBACK(gtk_window_close), window);
-    g_signal_connect_swapped(button2, "clicked", G_CALLBACK(print_entry), entry_field);
+    g_signal_connect_swapped(get_input_button, "clicked", G_CALLBACK(print_entry), entry_field);
     
     gtk_window_set_child(GTK_WINDOW(window), grid);
     gtk_window_present(GTK_WINDOW(window));
 }
 
-int main (int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
     // Create a new application
-    GtkApplication *app = gtk_application_new("com.example.GtkApplication", G_APPLICATION_FLAGS_NONE);
+    GtkApplication *app = gtk_application_new("com.pentestapp.GtkApplication", G_APPLICATION_FLAGS_NONE);
     g_signal_connect(app, "activate", G_CALLBACK(on_activate), NULL);    
     return g_application_run(G_APPLICATION(app), argc, argv);
 }
