@@ -2,12 +2,6 @@
 #include <stdio.h>
 #include "shell_utils.h"
 
-// static char *get_entry_field_ip(GtkEntry *entry_field) {
-//     GtkEntryBuffer *buffer = gtk_entry_get_buffer(entry_field);
-//     const char *text = gtk_entry_buffer_get_text(buffer);    
-//     return text;
-// }
-
 static void on_activate(GtkApplication *app) {
     // Create a new window
     GtkWidget *window = gtk_application_window_new(app);
