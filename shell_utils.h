@@ -4,11 +4,11 @@
 #include <gtk-4.0/gtk/gtk.h>
 
 typedef struct _CallBackData { 
-    GtkEntry *IP;
+    GtkWidget *IP;
     char *ReturnVal;
 } CallBackData;
 
-CallBackData *init_callback_data(GtkEntry *entry);
-void nmap(CallBackData data);
+CallBackData *init_callback_data(GtkWidget **entry);
+void nmap(CallBackData *data);
 
 #endif // !SHELL_UTILS

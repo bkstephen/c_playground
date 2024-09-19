@@ -14,7 +14,8 @@ static void on_activate(GtkApplication *app) {
 
     // Input field
     GtkWidget *ip_field = gtk_entry_new();
-    CallBackData *data = init_callback_data(ip_field);
+    CallBackData *data = init_callback_data(&ip_field);
+    //data->IP = ip_field;
 
     // Buttons
     GtkWidget *nmap_button = gtk_button_new_with_label("nmap");
