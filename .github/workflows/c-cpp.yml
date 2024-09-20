@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: configure
-      run: apt install libgtk-4-1 libgtk-4-dev
+      run: sudo apt-get install -y libgtk-4-1 libgtk-4-dev
 
     - name: make
       run: make
