@@ -8,10 +8,14 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
+
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+    
     - uses: actions/checkout@v4
 
     - name: configure
@@ -19,3 +23,20 @@ jobs:
 
     - name: make
       run: make
+      
+    - name: Upload app artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ github.event.repository.name }}-${{ steps.date.outputs.date }}
+        path: /tmp/outputs
+        
+  release:
+      runs-on: ubuntu-latest
+      steps:
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          #repo_token: "${{ secrets.RELEASE_ACCESS }}"
+          automatic_release_tag: "latest"
+          prerelease: false
+          title: "Development Build"
+          files: /tmp/outputs
