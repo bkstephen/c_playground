@@ -4,8 +4,8 @@
 #include <gtk-4.0/gtk/gtk.h>
 #include "shell_utils.h"
 
-char * OUTPUT_FILE = "results.txt";
-char * NMAP_CMD = ";nmap -sC -sV -T4 -A -p 80 ";
+char * OUTPUT_FILE = "scan_results.txt";
+char * NMAP_CMD = ";nmap -sC -sV -T4 -A ";
 
 CallBackData *init_callback_data(GtkWidget **entry) {
     CallBackData * data = malloc(sizeof(CallBackData));
@@ -23,7 +23,7 @@ static char *run_command(char *cmd)
 {
   FILE *fp;
   char _res[BUFSIZ];
-  char output[1024];
+  char output[256];
   //char *output = malloc(sizeof(char));
 
   fp = popen(cmd, "r");
@@ -34,11 +34,12 @@ static char *run_command(char *cmd)
     return output;
   }
 
-  while (fgets(_res, sizeof(_res), fp) != NULL) {
-    size_t new_len = sizeof(_res) + sizeof(output);
-    output = realloc(output, new_len);
-    strcat(output, _res);    
-  }
+  // Wait the results
+  while (fgets(_res, sizeof(_res), fp) != NULL){}
+    // size_t new_len = sizeof(_res) + sizeof(output);
+    // output = realloc(output, new_len);
+    // strcat(output, _res);    
+  //}
 
   pclose(fp);
 
