@@ -4,3 +4,4 @@ all:
 	${CC} -Wall shell_utils.c main.c -o pentestapp ${CFLAGS_LIBS}
 clean:
 	rm -f pentestapp
+	rm -f shell_utils

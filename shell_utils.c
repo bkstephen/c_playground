@@ -4,7 +4,8 @@
 #include <gtk-4.0/gtk/gtk.h>
 #include "shell_utils.h"
 
-char * NMAP_CMD = "-c /usr/bin/nmap -sC -sV -T4 -A ";
+char * OUTPUT_FILE = "results.txt";
+char * NMAP_CMD = ";nmap -sC -sV -T4 -A -p 80 ";
 
 CallBackData *init_callback_data(GtkWidget **entry) {
     CallBackData * data = malloc(sizeof(CallBackData));
@@ -22,16 +23,15 @@ static char *run_command(char *cmd)
 {
   FILE *fp;
   char _res[BUFSIZ];
-  char *output = (char*)malloc(BUFSIZ);
+  char output[1024];
+  //char *output = malloc(sizeof(char));
 
-  const char * shell_path = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin";
-  fp = execl(shell_path, "/bin/bash", "-c", cmd, (char *)0);
-
-  //fp = popen(cmd, "r");
+  fp = popen(cmd, "r");
 
   if (fp == NULL) {
-    g_print("Failed to run command\n" );
-    return NULL;
+    strcpy(output, "Command failed to run: ");
+    strcat(output, cmd);
+    return output;
   }
 
   while (fgets(_res, sizeof(_res), fp) != NULL) {
@@ -41,6 +41,9 @@ static char *run_command(char *cmd)
   }
 
   pclose(fp);
+
+  strcpy(output, "Command ran successfully, check for results in ");
+  strcat(output, OUTPUT_FILE);
   return output;
 }
 
@@ -48,12 +51,14 @@ void nmap(CallBackData *data) {
     GtkEntryBuffer *buffer = gtk_entry_get_buffer(data->IP);
     const char *ip = gtk_entry_buffer_get_text(buffer);
 
-    char *cmd[sizeof(NMAP_CMD) + sizeof(*ip)];
+    char *cmd[sizeof(NMAP_CMD) + sizeof(*ip) + sizeof(OUTPUT_FILE) + 2];
     strcat(cmd, NMAP_CMD);
     strcat(cmd, ip);
+    strcat(cmd, ">");
+    strcat(cmd, OUTPUT_FILE);
 
     data->ReturnVal = run_command(cmd);
 
-    g_print("%s\n",cmd);
+    //g_print("%s\n",cmd);
     g_print("%s\n",data->ReturnVal);
 }
